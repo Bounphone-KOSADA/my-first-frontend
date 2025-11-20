@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 function Sidebar() {
   const location = useLocation();
@@ -9,6 +10,30 @@ function Sidebar() {
     return location.pathname === path
       ? 'bg-blue-700 text-white'
       : 'text-gray-300 hover:bg-blue-700 hover:text-white';
+  };
+
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to logout?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#dc2626',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, logout',
+      cancelButtonText: 'Cancel',
+    });
+
+    if (result.isConfirmed) {
+      logout();
+      Swal.fire({
+        icon: 'success',
+        title: 'Logged out',
+        text: 'You have been logged out successfully',
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    }
   };
 
   return (
@@ -79,7 +104,7 @@ function Sidebar() {
         <div className="p-4 border-t border-blue-700">
           {user ? (
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="w-full bg-red-600 hover:bg-red-700 px-4 py-3 rounded-lg transition"
             >
               🚪 Logout

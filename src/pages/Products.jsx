@@ -160,14 +160,14 @@ function Products() {
                   <p className="text-gray-600 mb-3">{product.description}</p>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-2xl font-bold text-blue-600">
-                      ${product.price}
+                      ${product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                     <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
                       {product.category}
                     </span>
                   </div>
                   <p className="text-gray-500 text-sm">
-                    Stock: {product.stock} units
+                    Stock: {product.stock.toLocaleString()} units
                   </p>
                 </div>
               ))

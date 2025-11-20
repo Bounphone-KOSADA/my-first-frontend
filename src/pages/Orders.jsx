@@ -99,11 +99,11 @@ function Orders() {
                             {item.product?.name || 'Product'}
                           </p>
                           <p className="text-gray-600 text-sm">
-                            Quantity: {item.quantity}
+                            Quantity: {item.quantity.toLocaleString()}
                           </p>
                         </div>
                         <p className="font-bold text-gray-800">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ${(item.price * item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </p>
                       </div>
                     ))}
@@ -116,7 +116,7 @@ function Orders() {
                       Total Amount:
                     </span>
                     <span className="text-2xl font-bold text-blue-600">
-                      ${order.totalAmount.toFixed(2)}
+                      ${order.totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                   </div>
                 </div>

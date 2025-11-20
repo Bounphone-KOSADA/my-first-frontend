@@ -138,8 +138,8 @@ function CreateOrder() {
                   <div>
                     <h3 className="font-bold text-gray-800">{product.name}</h3>
                     <p className="text-gray-600 text-sm">{product.description}</p>
-                    <p className="text-blue-600 font-bold mt-1">${product.price}</p>
-                    <p className="text-gray-500 text-sm">Stock: {product.stock}</p>
+                    <p className="text-blue-600 font-bold mt-1">${product.price.toLocaleString()}</p>
+                    <p className="text-gray-500 text-sm">Stock: {product.stock.toLocaleString()}</p>
                   </div>
                   <button
                     onClick={() => handleAddItem(product)}
@@ -174,7 +174,7 @@ function CreateOrder() {
                             {item.product.name}
                           </h4>
                           <p className="text-gray-600 text-sm">
-                            ${item.price} × {item.quantity}
+                            ${item.price.toLocaleString()} × {item.quantity.toLocaleString()}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -205,7 +205,7 @@ function CreateOrder() {
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-xl font-bold text-gray-800">Total:</span>
                       <span className="text-2xl font-bold text-blue-600">
-                        ${calculateTotal().toFixed(2)}
+                        ${calculateTotal().toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </span>
                     </div>
 

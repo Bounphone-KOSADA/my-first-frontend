@@ -131,7 +131,7 @@ function ManagePayments() {
                   <tr key={payment._id} className="border-t hover:bg-gray-50">
                     <td className="py-3 px-4">{payment.customerName}</td>
                     <td className="py-3 px-4">{payment.customerEmail}</td>
-                    <td className="py-3 px-4 font-bold">${payment.amount.toFixed(2)}</td>
+                    <td className="py-3 px-4 font-bold">${payment.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td className="py-3 px-4">{payment.paymentMethod}</td>
                     <td className="py-3 px-4">
                       <span

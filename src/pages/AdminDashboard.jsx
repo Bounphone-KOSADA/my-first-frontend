@@ -136,7 +136,7 @@ function AdminDashboard() {
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-bold text-gray-800 mb-2">Products</h3>
                 <p className="text-3xl font-bold text-blue-600">
-                  {analytics.productStats?.totalProducts || 0}
+                  {(analytics.productStats?.totalProducts || 0).toLocaleString()}
                 </p>
                 <p className="text-gray-600 text-sm">Total Products</p>
               </div>
@@ -145,10 +145,10 @@ function AdminDashboard() {
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-bold text-gray-800 mb-2">Orders</h3>
                 <p className="text-3xl font-bold text-green-600">
-                  {analytics.orderStats?.totalOrders || 0}
+                  {(analytics.orderStats?.totalOrders || 0).toLocaleString()}
                 </p>
                 <p className="text-gray-600 text-sm">
-                  Revenue: ${analytics.orderStats?.totalRevenue?.toFixed(2) || '0.00'}
+                  Revenue: ${(analytics.orderStats?.totalRevenue || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
               </div>
 
@@ -161,7 +161,7 @@ function AdminDashboard() {
                     : 0}%
                 </p>
                 <p className="text-gray-600 text-sm">
-                  {analytics.paymentStats?.totalPayments || 0} Total Payments
+                  {(analytics.paymentStats?.totalPayments || 0).toLocaleString()} Total Payments
                 </p>
               </div>
             </div>
@@ -185,7 +185,7 @@ function AdminDashboard() {
                       <tr key={order._id} className="border-b hover:bg-gray-50">
                         <td className="py-3 px-4">{order.orderNumber}</td>
                         <td className="py-3 px-4">{order.customerName}</td>
-                        <td className="py-3 px-4">${order.totalAmount.toFixed(2)}</td>
+                        <td className="py-3 px-4">${order.totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         <td className="py-3 px-4">
                           <span className="px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
                             {order.status}
@@ -231,7 +231,7 @@ function AdminDashboard() {
                     {payments.slice(0, 10).map((payment) => (
                       <tr key={payment._id} className="border-b hover:bg-gray-50">
                         <td className="py-3 px-4">{payment.customerName}</td>
-                        <td className="py-3 px-4">${payment.amount.toFixed(2)}</td>
+                        <td className="py-3 px-4">${payment.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         <td className="py-3 px-4">{payment.paymentMethod}</td>
                         <td className="py-3 px-4">
                           <span

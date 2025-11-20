@@ -301,8 +301,8 @@ function ManageProducts() {
                         </div>
                       </td>
                       <td className="py-3 px-4">{product.category}</td>
-                      <td className="py-3 px-4 font-bold">${product.price}</td>
-                      <td className="py-3 px-4">{product.stock}</td>
+                      <td className="py-3 px-4 font-bold">${product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                      <td className="py-3 px-4">{product.stock.toLocaleString()}</td>
                       <td className="py-3 px-4">
                         <div className="flex gap-2">
                           <button
