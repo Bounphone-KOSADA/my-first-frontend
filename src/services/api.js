@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://localhost:3000/api';
 
 // Create axios instance
 const api = axios.create({
@@ -18,6 +18,20 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor to handle backend response structure
+api.interceptors.response.use(
+  (response) => {
+    // If backend returns { success: true, data: ... }, extract the data
+    if (response.data && response.data.success !== undefined) {
+      return { ...response, data: response.data.data };
+    }
+    return response;
   },
   (error) => {
     return Promise.reject(error);
@@ -48,6 +62,26 @@ export const ordersAPI = {
   create: (orderData) => api.post('/orders', orderData),
   updateStatus: (id, status) => api.patch(`/orders/${id}/status`, { status }),
   cancel: (id) => api.delete(`/orders/${id}`),
+};
+
+// Payments API
+export const paymentsAPI = {
+  getAll: () => api.get('/payments'),
+  getById: (id) => api.get(`/payments/${id}`),
+  getByOrderId: (orderId) => api.get(`/payments/order/${orderId}`),
+  getByStatus: (status) => api.get(`/payments/status/${status}`),
+  create: (paymentData) => api.post('/payments', paymentData),
+  process: (id) => api.patch(`/payments/${id}/process`),
+};
+
+// Analytics API
+export const analyticsAPI = {
+  getProductStats: () => api.get('/analytics/products/count'),
+  getProductsByCategory: () => api.get('/analytics/products/by-category'),
+  getOrderStats: () => api.get('/analytics/orders/stats'),
+  getOrdersByStatus: () => api.get('/analytics/orders/by-status'),
+  getPaymentsByMethod: () => api.get('/analytics/payments/by-method'),
+  getPaymentSuccessRate: () => api.get('/analytics/payments/success-rate'),
 };
 
 export default api;
