@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { productsAPI } from '../services/api';
+import Swal from 'sweetalert2';
 
 function ManageProducts() {
 
@@ -51,8 +52,22 @@ function ManageProducts() {
     try {
       if (editingProduct) {
         await productsAPI.update(editingProduct._id, formData);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Product updated successfully',
+          timer: 2000,
+          showConfirmButton: false,
+        });
       } else {
         await productsAPI.create(formData);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Product created successfully',
+          timer: 2000,
+          showConfirmButton: false,
+        });
       }
 
       setShowForm(false);
@@ -66,7 +81,11 @@ function ManageProducts() {
       });
       fetchProducts();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to save product');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: err.response?.data?.message || 'Failed to save product',
+      });
       console.error(err);
     }
   };
@@ -84,13 +103,34 @@ function ManageProducts() {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('Are you sure you want to delete this product?')) return;
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       await productsAPI.delete(id);
+      Swal.fire({
+        icon: 'success',
+        title: 'Deleted!',
+        text: 'Product has been deleted',
+        timer: 2000,
+        showConfirmButton: false,
+      });
       fetchProducts();
     } catch (err) {
-      setError('Failed to delete product');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Failed to delete product',
+      });
       console.error(err);
     }
   };

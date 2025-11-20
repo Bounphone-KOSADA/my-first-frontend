@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productsAPI, ordersAPI } from '../services/api';
+import Swal from 'sweetalert2';
 
 function CreateOrder() {
   const navigate = useNavigate();
@@ -66,7 +67,11 @@ function CreateOrder() {
     e.preventDefault();
 
     if (selectedItems.length === 0) {
-      setError('Please add at least one item to the order');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Empty Cart',
+        text: 'Please add at least one item to the order',
+      });
       return;
     }
 
@@ -87,9 +92,22 @@ function CreateOrder() {
       };
 
       await ordersAPI.create(orderData);
-      navigate('/orders');
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Order created successfully',
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      setTimeout(() => {
+        navigate('/orders');
+      }, 2000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create order');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: err.response?.data?.message || 'Failed to create order',
+      });
       console.error(err);
     } finally {
       setLoading(false);

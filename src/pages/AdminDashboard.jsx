@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { analyticsAPI, ordersAPI, paymentsAPI } from '../services/api';
+import Swal from 'sweetalert2';
 
 function AdminDashboard() {
   const [analytics, setAnalytics] = useState({
@@ -63,19 +64,53 @@ function AdminDashboard() {
   const handleUpdateOrderStatus = async (orderId, newStatus) => {
     try {
       await ordersAPI.updateStatus(orderId, newStatus);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Order status updated successfully',
+        timer: 2000,
+        showConfirmButton: false,
+      });
       fetchData(); // Refresh data
     } catch (err) {
-      setError('Failed to update order status');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Failed to update order status',
+      });
       console.error(err);
     }
   };
 
   const handleProcessPayment = async (paymentId) => {
+    const result = await Swal.fire({
+      title: 'Process Payment?',
+      text: 'This will mark the payment as completed',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#10b981',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, process it!',
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       await paymentsAPI.process(paymentId);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Payment processed successfully',
+        timer: 2000,
+        showConfirmButton: false,
+      });
       fetchData(); // Refresh data
     } catch (err) {
-      setError('Failed to process payment');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Failed to process payment',
+      });
       console.error(err);
     }
   };

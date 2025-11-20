@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -17,9 +18,23 @@ function Login() {
     const result = await login(email, password);
 
     if (result.success) {
-      window.location.href = '/products';
+      Swal.fire({
+        icon: 'success',
+        title: 'Welcome!',
+        text: 'Login successful',
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      setTimeout(() => {
+        window.location.href = '/products';
+      }, 1500);
     } else {
       setError(result.error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Failed',
+        text: result.error,
+      });
     }
     setLoading(false);
   };

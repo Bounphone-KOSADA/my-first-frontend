@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 function Register() {
   const [name, setName] = useState('');
@@ -18,9 +19,23 @@ function Register() {
     const result = await register(name, email, password);
 
     if (result.success) {
-      window.location.href = '/products';
+      Swal.fire({
+        icon: 'success',
+        title: 'Welcome!',
+        text: 'Registration successful',
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      setTimeout(() => {
+        window.location.href = '/products';
+      }, 1500);
     } else {
       setError(result.error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Registration Failed',
+        text: result.error,
+      });
     }
     setLoading(false);
   };

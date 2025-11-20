@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { paymentsAPI, ordersAPI } from '../services/api';
+import Swal from 'sweetalert2';
 
 function ManagePayments() {
   const [payments, setPayments] = useState([]);
@@ -33,13 +34,34 @@ function ManagePayments() {
   };
 
   const handleProcessPayment = async (paymentId) => {
-    if (!confirm('Are you sure you want to process this payment?')) return;
+    const result = await Swal.fire({
+      title: 'Process Payment?',
+      text: 'This will mark the payment as completed and generate a transaction ID',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#10b981',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, process it!',
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       await paymentsAPI.process(paymentId);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Payment processed successfully',
+        timer: 2000,
+        showConfirmButton: false,
+      });
       fetchPayments(); // Refresh list
     } catch (err) {
-      setError('Failed to process payment');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Failed to process payment',
+      });
       console.error(err);
     }
   };
