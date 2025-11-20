@@ -4,6 +4,8 @@ import Register from './pages/Register';
 import Products from './pages/Products';
 import Orders from './pages/Orders';
 import CreateOrder from './pages/CreateOrder';
+import AdminDashboard from './pages/AdminDashboard';
+import ManageProducts from './pages/ManageProducts';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/create-order" element={<CreateOrder />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/products" element={<ManageProducts />} />
       </Routes>
     </BrowserRouter>
   );

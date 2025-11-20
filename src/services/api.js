@@ -50,4 +50,24 @@ export const ordersAPI = {
   cancel: (id) => api.delete(`/orders/${id}`),
 };
 
+// Payments API
+export const paymentsAPI = {
+  getAll: () => api.get('/payments'),
+  getById: (id) => api.get(`/payments/${id}`),
+  getByOrderId: (orderId) => api.get(`/payments/order/${orderId}`),
+  getByStatus: (status) => api.get(`/payments/status/${status}`),
+  create: (paymentData) => api.post('/payments', paymentData),
+  process: (id) => api.patch(`/payments/${id}/process`),
+};
+
+// Analytics API
+export const analyticsAPI = {
+  getProductStats: () => api.get('/analytics/products/count'),
+  getProductsByCategory: () => api.get('/analytics/products/by-category'),
+  getOrderStats: () => api.get('/analytics/orders/stats'),
+  getOrdersByStatus: () => api.get('/analytics/orders/by-status'),
+  getPaymentsByMethod: () => api.get('/analytics/payments/by-method'),
+  getPaymentSuccessRate: () => api.get('/analytics/payments/success-rate'),
+};
+
 export default api;
