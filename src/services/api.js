@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://localhost:3000/api';
 
 // Create axios instance
 const api = axios.create({
@@ -29,7 +29,16 @@ api.interceptors.response.use(
   (response) => {
     // If backend returns { success: true, data: ... }, extract the data
     if (response.data && response.data.success !== undefined) {
-      return { ...response, data: response.data.data };
+      // If data field exists, use it
+      if (response.data.data !== undefined) {
+        return { ...response, data: response.data.data };
+      }
+      // Otherwise, use count field if it exists (for getProductsCount)
+      if (response.data.count !== undefined) {
+        return { ...response, data: response.data.count };
+      }
+      // Return the whole response.data if no data or count field
+      return { ...response, data: response.data };
     }
     return response;
   },
