@@ -41,7 +41,7 @@ function Sidebar() {
       {/* Sidebar */}
       <div className="w-64 bg-blue-800 text-white flex flex-col">
         <div className="p-6 border-b border-blue-700">
-          <h1 className="text-2xl font-bold">My Store</h1>
+          <h1 className="text-2xl font-bold">ShopEase</h1>
           {user && (
             <p className="text-sm text-blue-200 mt-2">
               Welcome, {user.name}
