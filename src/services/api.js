@@ -24,6 +24,20 @@ api.interceptors.request.use(
   }
 );
 
+// Response interceptor to handle backend response structure
+api.interceptors.response.use(
+  (response) => {
+    // If backend returns { success: true, data: ... }, extract the data
+    if (response.data && response.data.success !== undefined) {
+      return { ...response, data: response.data.data };
+    }
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Auth API
 export const authAPI = {
   register: (userData) => api.post('/auth/register', userData),
