@@ -1,27 +1,19 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ordersAPI } from '../services/api';
-import { useAuth } from '../hooks/useAuth';
 
 function Orders() {
-  const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
-
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
     fetchOrders();
-  }, [isAuthenticated, navigate]);
+  }, []);
 
   const fetchOrders = async () => {
     try {
       setLoading(true);
+      const user = JSON.parse(localStorage.getItem('user'));
       const response = await ordersAPI.getByCustomerEmail(user.email);
       setOrders(response.data);
       setError('');
@@ -44,33 +36,8 @@ function Orders() {
     return colors[status] || 'bg-gray-100 text-gray-800';
   };
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Navigation */}
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-800">My Orders</h1>
-            <div className="flex gap-4">
-              <a href="/products" className="text-blue-600 hover:underline">
-                Products
-              </a>
-              <a
-                href="/create-order"
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-              >
-                Create Order
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="p-8">
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             {error}
@@ -157,7 +124,6 @@ function Orders() {
             ))}
           </div>
         )}
-      </div>
     </div>
   );
 }
