@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { productsAPI } from '../services/api';
-import { useAuth } from '../hooks/useAuth';
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -9,8 +8,6 @@ function Products() {
   const [searchQuery, setSearchQuery] = useState('');
   const [category, setCategory] = useState('');
   const [sortBy, setSortBy] = useState('');
-
-  const { user, logout } = useAuth();
 
   const categories = ['Electronics', 'Clothing', 'Food', 'Books', 'Other'];
 
@@ -61,44 +58,8 @@ function Products() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Navigation */}
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">My Store</h1>
-          <div className="flex items-center gap-4">
-            {user ? (
-              <>
-                <span className="text-gray-600">Welcome, {user.name}</span>
-                <button
-                  onClick={logout}
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <a
-                  href="/login"
-                  className="text-blue-600 hover:underline"
-                >
-                  Login
-                </a>
-                <a
-                  href="/register"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-                >
-                  Register
-                </a>
-              </>
-            )}
-          </div>
-        </div>
-      </nav>
-
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">Products</h2>
+    <div className="p-8">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">Products</h2>
 
         {/* Search and Filters */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -213,7 +174,6 @@ function Products() {
             )}
           </div>
         )}
-      </div>
     </div>
   );
 }
