@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'http://localhost:5000/api';
 
 // Create axios instance
 const api = axios.create({
@@ -49,6 +49,7 @@ export const productsAPI = {
   getAll: (params) => api.get('/products', { params }),
   getById: (id) => api.get(`/products/${id}`),
   search: (query) => api.get('/products/search', { params: { q: query } }),
+  getLowStock: (threshold) => api.get('/products/low-stock', { params: { threshold } }),
   create: (productData) => api.post('/products', productData),
   update: (id, productData) => api.put(`/products/${id}`, productData),
   delete: (id) => api.delete(`/products/${id}`),
@@ -76,12 +77,24 @@ export const paymentsAPI = {
 
 // Analytics API
 export const analyticsAPI = {
+  // Product analytics
   getProductStats: () => api.get('/analytics/products/count'),
   getProductsByCategory: () => api.get('/analytics/products/by-category'),
+  getInventoryValue: () => api.get('/analytics/products/value'),
+
+  // Order analytics
   getOrderStats: () => api.get('/analytics/orders/stats'),
   getOrdersByStatus: () => api.get('/analytics/orders/by-status'),
+  getRecentOrders: () => api.get('/analytics/orders/recent'),
+  getTopProducts: () => api.get('/analytics/orders/top-products'),
+
+  // Payment analytics
   getPaymentsByMethod: () => api.get('/analytics/payments/by-method'),
   getPaymentSuccessRate: () => api.get('/analytics/payments/success-rate'),
+  getRevenueByStatus: () => api.get('/analytics/payments/revenue'),
+  getDailyRevenue: (startDate, endDate) => api.get('/analytics/payments/daily', {
+    params: { startDate, endDate }
+  }),
 };
 
 export default api;
