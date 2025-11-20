@@ -34,14 +34,23 @@ function AdminDashboard() {
         paymentsAPI.getAll(),
       ]);
 
+      // Handle different response structures
+      const paymentData = paymentStatsRes.data || {};
+
       setAnalytics({
-        productStats: productStatsRes.data,
-        orderStats: orderStatsRes.data,
-        paymentStats: paymentStatsRes.data,
+        productStats: { totalProducts: productStatsRes.data || 0 },
+        orderStats: orderStatsRes.data || { totalOrders: 0, totalRevenue: 0, avgOrderValue: 0 },
+        paymentStats: {
+          ...paymentData,
+          // Remove % sign from successRate if it exists
+          successRate: typeof paymentData.successRate === 'string'
+            ? parseFloat(paymentData.successRate)
+            : paymentData.successRate || 0
+        },
       });
 
-      setOrders(ordersRes.data);
-      setPayments(paymentsRes.data);
+      setOrders(Array.isArray(ordersRes.data) ? ordersRes.data : []);
+      setPayments(Array.isArray(paymentsRes.data) ? paymentsRes.data : []);
       setError('');
     } catch (err) {
       setError('Failed to fetch dashboard data');
@@ -112,9 +121,13 @@ function AdminDashboard() {
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-lg font-bold text-gray-800 mb-2">Payments</h3>
                 <p className="text-3xl font-bold text-purple-600">
-                  {analytics.paymentStats?.successRate?.toFixed(1) || 0}%
+                  {typeof analytics.paymentStats?.successRate === 'number'
+                    ? analytics.paymentStats.successRate.toFixed(1)
+                    : 0}%
                 </p>
-                <p className="text-gray-600 text-sm">Success Rate</p>
+                <p className="text-gray-600 text-sm">
+                  {analytics.paymentStats?.totalPayments || 0} Total Payments
+                </p>
               </div>
             </div>
 
