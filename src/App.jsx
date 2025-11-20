@@ -8,6 +8,7 @@ import Orders from './pages/Orders';
 import CreateOrder from './pages/CreateOrder';
 import AdminDashboard from './pages/AdminDashboard';
 import ManageProducts from './pages/ManageProducts';
+import ManagePayments from './pages/ManagePayments';
 
 function App() {
   return (
@@ -51,6 +52,14 @@ function App() {
                   element={
                     <ProtectedRoute requireAdmin>
                       <ManageProducts />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/payments"
+                  element={
+                    <ProtectedRoute requireAdmin>
+                      <ManagePayments />
                     </ProtectedRoute>
                   }
                 />

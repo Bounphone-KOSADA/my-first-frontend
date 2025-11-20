@@ -66,6 +66,12 @@ function Sidebar() {
               >
                 ⚙️ Manage Products
               </Link>
+              <Link
+                to="/admin/payments"
+                className={`block px-4 py-3 rounded-lg transition ${isActive('/admin/payments')}`}
+              >
+                💳 Manage Payments
+              </Link>
             </>
           )}
         </nav>
