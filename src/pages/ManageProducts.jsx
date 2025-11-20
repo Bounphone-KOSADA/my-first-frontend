@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { productsAPI } from '../services/api';
-import { useAuth } from '../hooks/useAuth';
 
 function ManageProducts() {
-  const navigate = useNavigate();
-  const { isAdmin } = useAuth();
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,12 +20,8 @@ function ManageProducts() {
   const categories = ['Electronics', 'Clothing', 'Food', 'Books', 'Other'];
 
   useEffect(() => {
-    if (!isAdmin) {
-      navigate('/products');
-      return;
-    }
     fetchProducts();
-  }, [isAdmin, navigate]);
+  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -115,30 +107,9 @@ function ManageProducts() {
     });
   };
 
-  if (!isAdmin) {
-    return null;
-  }
-
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Navigation */}
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-800">Manage Products</h1>
-            <div className="flex gap-4">
-              <a href="/admin" className="text-blue-600 hover:underline">
-                Dashboard
-              </a>
-              <a href="/products" className="text-blue-600 hover:underline">
-                Products
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="p-8">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">Manage Products</h2>
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             {error}
@@ -315,7 +286,6 @@ function ManageProducts() {
             </div>
           </div>
         )}
-      </div>
     </div>
   );
 }

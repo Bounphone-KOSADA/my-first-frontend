@@ -1,24 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productsAPI, ordersAPI } from '../services/api';
-import { useAuth } from '../hooks/useAuth';
 
 function CreateOrder() {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
-
   const [products, setProducts] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
     fetchProducts();
-  }, [isAuthenticated, navigate]);
+  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -81,6 +74,7 @@ function CreateOrder() {
     setError('');
 
     try {
+      const user = JSON.parse(localStorage.getItem('user'));
       const orderData = {
         customerName: user.name,
         customerEmail: user.email,
@@ -102,30 +96,9 @@ function CreateOrder() {
     }
   };
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Navigation */}
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-800">Create Order</h1>
-            <div className="flex gap-4">
-              <a href="/products" className="text-blue-600 hover:underline">
-                Products
-              </a>
-              <a href="/orders" className="text-blue-600 hover:underline">
-                My Orders
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="p-8">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">Create Order</h2>
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             {error}
@@ -231,7 +204,6 @@ function CreateOrder() {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }
