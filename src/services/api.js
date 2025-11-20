@@ -40,4 +40,14 @@ export const productsAPI = {
   delete: (id) => api.delete(`/products/${id}`),
 };
 
+// Orders API
+export const ordersAPI = {
+  getAll: () => api.get('/orders'),
+  getById: (id) => api.get(`/orders/${id}`),
+  getByCustomerEmail: (email) => api.get(`/orders/customer/${email}`),
+  create: (orderData) => api.post('/orders', orderData),
+  updateStatus: (id, status) => api.patch(`/orders/${id}/status`, { status }),
+  cancel: (id) => api.delete(`/orders/${id}`),
+};
+
 export default api;
